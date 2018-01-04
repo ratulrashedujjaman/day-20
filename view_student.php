@@ -3,15 +3,17 @@ require_once 'vendor/autoload.php';
 use App\classes\student;
 $message='';
 
+if (isset($_GET['delete'])){
+    $id= $_GET['id'];
+    $message = Student::deleteStudentInfo($id);
+
+}
 $queryResult= Student::getAllStudentInfo();
 
 //while ($student=mysqli_fetch_assoc($queryResult)) {
 //    echo '<pre>';
 //    print_r($student);
 //}
-
-
-
 ?>
 <hr/>
 <a href="add_students.php">Add Student</a>
@@ -25,6 +27,7 @@ $queryResult= Student::getAllStudentInfo();
         <th>Email</th>
         <th>Mobile</th>
         <th>Price</th>
+        <th>Action</th>
     </tr>
 
     <?php while ($student=mysqli_fetch_assoc($queryResult)) {
@@ -37,6 +40,12 @@ $queryResult= Student::getAllStudentInfo();
         <th> <?php echo $student['email'] ?></th>
         <th> <?php echo $student['mobile'] ?></th>
         <th> <?php echo $student['price'] ?></th>
+
+        <td>
+            <a href="edit_student.php?id=<?php echo $student['id'] ?>">Edit</a>
+            <a href="?delete=true&id=<?php echo $student['id'] ?>" onclick="return confirm('Are You Sure!');">Delete</a>
+        </td>
+
     </tr>
     <?php } ?>
 </table>
